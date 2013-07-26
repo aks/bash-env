@@ -48,6 +48,92 @@ specific files, exact control, with reasonable defaults can be
 achieved without duplicating setup code.  By having the user file
 last, the user can override anything to suit taste.
 
+Let's describe some uses.
+
+I have computers at both work and home. There are some production
+systems on which I have accounts, some QA hosts, some development
+systems, including my work laptop.  My home systems include a
+couple of Mac OS X systems, an Unbuntu system, and a Mac OS X
+laptop.
+
+I would like to have as uniform an environment as possible, but
+each system, or each group of systems will have some unique
+environments.
+
+The following is a hierarchical set of environments, centrally
+managed, distributed across all the hosts.  Even though some of
+the environment files are not needed on some hosts, it is easier
+to manage if all the files are distributed to all the hosts on
+which I have access.
+
+First, I'll setup two "workgroup" environemnts, one for work, and
+one for home.  My "home" workgroup is called "Home". My work
+workgroup is a hypothetical company called "Acme.com", and we'll
+call the workgroup "acme".
+
+The group of work production systems live in the subdomain of
+"prod.acme.com", the QA systems in "qa.acme.com", and the dev
+systems in "dev.acme.com".
+
+My user id on the work systems is "astebbens", while my user id on
+the home systems is "aks".
+
+My work personal laptop is called "somewhere", and my home desktop
+system is called "anywhere".
+
+Here are the files that can be created to property configure
+environments appropriate to each combination of user, workgroup,
+and system.
+
+<table>
+ <tr> 
+  <th>Filename</th>
+  <th>Purpose</th> </tr>
+ <tr> 
+  <td>.environment.acme.sh</td>
+  <td>Define variables for Acme.com</td>
+ </tr>
+ <tr>
+  <td>.envriomment.home.sh</td>
+  <td>Define variables for home systems</td>
+ </tr>
+ <tr>
+  <td>.envriomment.prod.acme.com.sh</td>
+  <td>Define variables for work production systems</td>
+ </tr>
+ <tr>
+  <td>.envriomment.qa.acme.com.sh</td>
+  <td>Define variables for work QA systems</td>
+ </tr>
+ <tr>
+  <td>.envriomment.dev.acme.com.sh</td>
+  <td>Define variables for work dev systems</td>
+ </tr>
+ <tr>
+  <td>.envriomment.darwin.sh</td>
+  <td>Define variables for Mac OS X systems</td>
+ </tr>
+ <tr>
+  <td>.envriomment.Ubuntu.sh</td>
+  <td>Define variables for Ubuntu systems</td>
+ </tr>
+ <tr>
+  <td>.environment.somewhere.sh</td>
+  <td>Define variables for work laptop</td>
+ <tr>
+ <tr>
+  <td>.environment.anywhere.sh</td>
+  <td>Define variables for home laptop</td>
+ <tr>
+  <td>.envriomment.astebbens.sh</td>
+  <td>Define variables for user astebbens</td>
+ </tr>
+ <tr>
+  <td>.envriomment.aks.sh</td>
+  <td>Define variables for user aks</td>
+ </tr>
+</table>
+
 The following environment variables are set, possibly based
 on the given sources.
 
@@ -152,5 +238,5 @@ Author
 
 Alan Stebbens <aks@stebbens.org>
 
-vim: set ai sw=2 textwidth=66
+vim: :set ai sw=2 textwidth=66
 
