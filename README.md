@@ -51,33 +51,65 @@ last, the user can override anything to suit taste.
 The following environment variables are set, possibly based
 on the given sources.
 
-  Envar          Source                 Meaning
-+--------------+----------------------+------------------------------+
-| USER         | LOGNAME              | User currently logged in     |
-| LOGNAME      | whoami               |                              |
-|--------------+----------------------+------------------------------|
-| OSTYPE       | uname -s             | Operating System type name   |
-| OSREV        | uname -r             | OS revision                  |
-| MACHTYPE     | uname -m             | Machine type                 |
-|--------------+----------------------+------------------------------|
-| HOST         | uname -n or hostname | Host name                    |
-| HOSTALASES   | ~/.hostaliases       | Host aliases list            |
-|--------------+----------------------+------------------------------|
-| ORGANIZATION | ~/.organization      |                              |
-|--------------+----------------------+------------------------------|
-| WORKGROUP    | ~/.workgroup or      | Company or organization name |
-|              | $ORGANIZATION        |                              |
-|--------------+----------------------+------------------------------|
-| DOMAIN       | ~/.domain or end of  |                              |
-|              | uname -n             | The local domain name        |
-+--------------+----------------------+------------------------------+
+<table>
+ <tr>
+  <th>Envar</th>
+  <th>Source</th>
+  <th>Meaning</th>
+ </tr>
+ <tr>
+  <td><tt>USER</tt><br><tt>LOGNAME</tt></td>
+  <td><tt>$LOGNAME</tt><br><tt>whoami</tt></td>
+  <td>User currently logged in</td>
+ </tr>
+ <tr>
+  <td><tt>OSTYPE</tt></td>
+  <td><tt>uname -s</tt></td>
+  <td>Operating System type name</td>
+ </tr>
+ <tr>
+  <td><tt>OSREV</tt></td>
+  <td><tt>uname -r</tt></td>
+  <td>OS revision</td>
+ </tr>
+ <tr>
+  <td><tt>MACHTYPE</tt></td>
+  <td><tt>uname -m</tt></td>
+  <td>Machine type</td>
+ </tr>
+ <tr>
+  <td><tt>HOST</tt></td>
+  <td><tt>uname -n</tt> <br/></tt>hostname</tt></td>
+  <td>Host name</td>
+ </tr>
+ <tr>
+  <td><tt>HOSTALASES</tt></td>
+  <td><tt>~/.hostaliases</tt></td>
+  <td>Host aliases list</td>
+ </tr>
+ <tr>
+  <td><tt>ORGANIZATION</tt></td>
+  <td><tt>~/.organization</tt></td>
+  <td>&nbsp;</td>
+ </tr>
+ <tr>
+  <td><tt>WORKGROUP</tt></td>
+  <td><tt>~/.workgroup</tt><br/><tt>$ORGANIZATION</tt></td>
+  <td>Company or organization name</td>
+ </tr>
+ <tr>
+  <td><tt>DOMAIN</tt></td>
+  <td><tt>~/.domain</tt> or end of <tt>uname -n</tt></td>
+  <td>The local domain name</td>
+ </tr>
+</table>
 
-DOMAIN and WORKGROUP both come after USER and HOST, so that each
-of the latter can choose the former, respectively.
+<tt>DOMAIN</tt> and <tt>WORKGROUP</tt> both come after <tt>USER</tt> and
+<tt>HOST</tt>, so that each of the latter can choose the former, respectively.
 
 Only the files that actually exist are sourced.
 
-After the files are sourced, the file "~/.runenv" can be examined
+After the files are sourced, the file <tt>~/.runenv</tt> can be examined
 to see which files were actually sourced.
 
 
@@ -87,29 +119,29 @@ Functions Provided
 This script provides the following functions to make writing the
 sub-enviroinment scripts easier:
 
-  run_file FILE [RECORDFILE]
+<tt>run_file FILE [RECORDFILE]</tt>
 
     source FILE if and only if it exists, if RECORDFILE is given,
     and if FILE is sourced without errors, then append FILE to the
     contents of RECORDFILE.
     
-  run_env  NAME
+<tt>run_env  NAME</tt>
 
     If ~/.environment.NAME.sh exists, source it, and if it is
     sourced without errors, append its name to ~/.runenv
 
-  run_env_once NAME
+<tt>run_env_once NAME</tt>
 
     If ~/.environment.NAME.sh exists and has not already been
     sourced during this session, source it, and record the fact in
     ~/.runenv.
 
-  add_path VAR PATH
+<tt>add_path VAR PATH</tt>
 
     Add PATH to the directory list in VAR if it's not already
     there.
 
-  add_paths VAR options LIST-OF-PATHS ..
+<tt>add_paths VAR options LIST-OF-PATHS ..</tt>
 
     Like "add_path", all the directories in LIST-OF-PATHS are
     added to the VAR, using the $SETPATH script, or the "add_path"
