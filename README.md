@@ -73,7 +73,8 @@ call the workgroup "acme".
 
 The group of work production systems live in the subdomain of
 "prod.acme.com", the QA systems in "qa.acme.com", and the dev
-systems in "dev.acme.com".
+systems in "dev.acme.com".  All of the work systems are linux
+systems (except my laptop, which is MacOSX).
 
 My user id on the work systems is "astebbens", while my user id on
 the home systems is "aks".
@@ -133,6 +134,45 @@ and system.
   <td>Define variables for user aks</td>
  </tr>
 </table>
+
+Here is the sequence of files on a production work system:
+
+    .environment.sh
+    .environment.linux.sh
+    .environment.astebbens.sh
+    .environment.acme.sh
+    .environment.prod.acme.com.sh
+
+Here are the files sourced in the work dev environment:
+
+    .environment.sh
+    .environment.linux.sh
+    .environment.astebbens.sh
+    .environment.acme.sh
+    .environment.dev.acme.com.sh
+
+Here are the files sourced in on my work laptop:
+
+    .environment.sh
+    .environment.darwin.sh
+    .environment.somewhere.sh
+    .environment.astebbens.sh
+    .environment.acme.sh
+    .environment.dev.acme.com.sh
+
+Here are the files sourced in on my home desktop:
+
+    .environment.sh
+    .environment.darwin.sh
+    .environment.anywhere.sh
+    .environment.aks.sh
+    .environment.home.sh
+
+The <tt>.environment.sh</tt> script does all the work of figuring out which
+other files need to be sourced.
+
+Environment Variables
+---------------------
 
 The following environment variables are set, possibly based
 on the given sources.
