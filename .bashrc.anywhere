@@ -1,0 +1,13 @@
+# .bashrc.anywhere
+# This will be run only on host anywhere
+
+# Ensure that /opt/local is in our path if it exists
+if [ -d /opt/local/bin ]; then
+   export PATH=/opt/local/bin:$PATH 
+fi
+
+test -r /sw/bin/init.sh && source /sw/bin/init.sh
+
+if [ -d ~aks/j601 ]; then
+  export JPATH601=~aks/j601
+fi
