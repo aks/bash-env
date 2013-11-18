@@ -1,26 +1,43 @@
-# .environment.aks.sh
-# Alan's bashrc startup for any system
-# $Id: .environment.aks.sh,v 1.8 2010/03/17 22:30:24 aks Exp $
+# .environment.__USER__.sh
+# __USER__'s bashrc startup for any system
 
-# Define my current working group
-unset WORKGROUP
+# ensure these named arguments do not exist as aliases
+noalias() { 
+  while [[ $# -gt 0 ]]; do
+    eval "unalias $1 2>/dev/null" 
+    shift
+  done
+}
 
 # more/less
 
+noalias m more
 m()    { less "$@" ; }
 more() { less "$@" ; }
 
 # filesystem listings
 
-ls()   { /bin/ls -FG "$@" ; }
+# Create these as functions and NOT aliases
+case `uname -s` in
+  Darwin|MacOS) LSFLAGS='-FG' ;;
+  Linux)        LSFLAGS='-Fh --color=auto' ;;
+esac
+
+noalias ls ll lsa lsd lsad lsg
+ls()   { /bin/ls $LSFLAGS "$@" ; }
 ll()   { ls -l "$@" ; }
 lsa()  { ls -a "$@" ; }
 lsd()  { ls -d "$@" ; }
 lsad() { ls -ad "$@" ; }
 lsg()  { ls -lg "$@" ; }
 
+if [[ -f /usr/bin/dircolors ]]; then
+  eval `dircolors`
+fi
+
 # t [directory] [ limit ] -- show <limit> "top" modified files
 
+noalias t
 t()   { 
   local limit=-20
   case "$1" in
@@ -30,6 +47,7 @@ t()   {
   ls -latch "$@"| head $limit
 }
 
+noalias dtree
 dtree() { 
   ls -R "$@" | 
   grep ':$'  | 
@@ -37,32 +55,30 @@ dtree() {
 }
 
 # Directory stack
-
+noalias pu po di di
 pu() { pushd "$@" ; }
 po() { popd $@ ; }
-alias	di='dirs -v'
-alias	d='dirs -v'
+di() { dirs -v ; }
+d()  { dirs -v ; }
 
 # grep
-#g()   { grep -i "$@" ; }
-#gr()  { grep "$@" ; }
-
-alias g='grep -i'
-alias gr=grep
+noalias g gr
+g()   { grep -i "$@" ; }
+gr()  { grep "$@" ; }
 
 # process listings
-#psg() { ps auxww | grep -i "$@" ; }
-#psj() { ps auxww | grep -i java ; }
-
-alias	psg='ps auxww | grep -i'
-alias	psj='ps auxx | grep -i java'
+noalias psg psj
+psg() { ps auxww | grep -i "$@" ; }
+psj() { ps auxww | grep -i java ; }
 
 # pretty cal
+noalias ncal
 ncal() { 
   cal | grep -C6 --color -e " $(date +%e)" -e "^(date +%e)" 
 }
 
 # history
+noalias h
 h() { history ${1:-20} ; }
 
 # use vi for visual editing
@@ -81,7 +97,11 @@ export VISUAL=vi
   
 # set the prompt
 
-export PS1='\[\e[1;34m\]\u@\h:\W \t (\j) <\!>\n\$\[\e[0;00m\] '
+if [[ $SHLVL > 1 ]]; then
+  export PS1="\[\e[1;34m\](L=$SHLVL) \u@\H:\W \t (\j) <\!>\n\$\[\e[0;00m\] "
+else
+  export PS1='\[\e[1;34m\]\u@\H:\W \t (\j) <\!>\n\$\[\e[0;00m\] '
+fi
 
 # set special CD for "screen"
 if [[ "$TERM" = 'screen' ]]; then
@@ -99,16 +119,10 @@ else
   dirtitle() { echo "$HOST:`basename $PWD`" ; }
 fi
 
-# update-ssh
-#
-# When reconnecting to existing screen or tmux sessions, the authentication
-# linkage needs to be refreshed.  The script ~/bin/update-ssh does this by
-# emitting a new export command.
-
-updatessh() { eval `update-ssh` ; }
-
-# Do this to make it hard to kill your login shell accidentally
-export IGNOREEOF=1
-unset autologout
+# Special shell level tracker
+noalias shlvl quit exit
+shlvl() { set | grep SHLVL ; }
+quit()  { (( SHLVL > 1 )) && builtin exit || echo "Not in a subshell!" ; }
+exit()  { quit ; }
 
 # vim: sw=2 ai

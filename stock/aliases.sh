@@ -1,22 +1,31 @@
-# $Header: /home/aks/RCS/.aliases.sh,v 1.8 2013/05/04 19:15:15 aks Exp $
-# Alan's .aliases file
+# Alan's .aliases.sh file
 #
 # Miscellaneous aliases
 
 alias a=alias
 alias una=unalias
 
+# Job control made a little easier
+a j='jobs -l'
 a 1='%1'
 a 2='%2'
 a 3='%3'
 a 4='%4'
 
-# directory macros
+# directory commands
 a .=pwd
 a ..='(up)'
-a home='cd;umask 22'
-#a pwd='echo $cwd'
+a home=cd
 a up='up=(`dirs`);cd ${up[1]}:h;echo $cwd;unset up'
+
+if [[ -n "$XDISPLAY" &&  "$TERM" != 'hpterm' ]];  then
+  po() { popdir $*  ; xtermname "`pwd`" ; }
+  pu() { pushdir $* ; xtermname "`pwd`" ; }
+else
+  a po='popdir'
+  a pu='pushdir'
+fi
+a d='dirs -v'
 
 a bye=logout
 
@@ -41,10 +50,6 @@ a errno='$PAGER /usr/include/sys/errno.h'
 
 # history command
 a h='history'
-
-
-a j='jobs -l'
-
 
 a mail='Mail'
 
@@ -140,14 +145,6 @@ go() {
   pwd
 }
 
-if [[ -n "$XDISPLAY" &&  "$TERM" != 'hpterm' ]];  then
-  po() { popdir $*  ; xtermname "`pwd`" ; }
-  pu() { pushdir $* ; xtermname "`pwd`" ; }
-else
-  a po='popdir'
-  a pu='pushdir'
-fi
-a d='dirs -v'
 
 # Quick'n'dirty list management
 # ml args	- make a list=with "args"

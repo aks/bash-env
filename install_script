@@ -1,0 +1,16 @@
+#!/bin/bash
+# install
+#
+# Installation script for the bash-env dot files.
+#
+# This script accepts command-line options, or can accept input
+# interactively to set certain variables.
+#
+# Options:
+#   -u USER         use USER as the login name
+#   -w WORKGROUP    use WORKGROUP for the workgroup
+#   -d DOMAIN       use DOMAIN for domain
+#   -n              no run mode
+#   -v              verbose mode
+#   -i              interactive mode
+#

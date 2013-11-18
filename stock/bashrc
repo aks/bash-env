@@ -1,0 +1,21 @@
+# __USER__'s bashrc
+
+# only do this if interactive shell
+
+if [[ -n "$PS1" ]]; then
+
+  if [[ -z "$RCHOME" ]]; then
+    # use the $HOME path, or use ~aks path.
+    for d in ~ ~__USER__ ; do
+      if [[ -f $d/.environment.sh ]]; then
+        export RCHOME=$d
+        break
+      fi
+    done
+  fi
+
+  # source our environment
+  [[ -f $RCHOME/.environment.sh ]] && source $RCHOME/.environment.sh
+
+fi
+# vim: sw=2 ai

@@ -45,19 +45,24 @@
 #   If ~/.environment.NAME.sh exists and has not already been sourced during
 #   this session, source it, and record the fact in ~/.runenv.
 #
-# add_path VAR PATH
+# add_path PATHVAR DIR
 #
-#   Add PATH to the directory list in VAR if it's not already there.
+#   Add DIR to the directory list in PATHVAR if it's not already there.
+#
+# add_path_first PATHVAR DIR
+#
+#   Add DIR to the front of the directory list in PATHVAR; if it's not already there.
 #
 # Alan Stebbens <aks@stebbens.org>
-#
-# $Header: /Users/aks/RCS/.environment.sh,v 1.4 2010/03/17 19:31:04 aks Exp $
 #
 # Source other .environment.*.sh files in the proper order
 #
 # DOMAINNAME comes after HOST, and  WORKGROUP comes after USER, so that each of
 # the latter can choose the former, respectively.
 #
+
+# if RCHOME is not defined, used the directory in which this script
+# resides.
 
 if [[ -z "$RCHOME" ]]; then
   export RCHOME=`cd $(dirname $0) ; pwd`
@@ -91,17 +96,33 @@ run_env_once envars
 # The scripts sourced below can use "add_path" to add a new directory to a path
 # variable
 #
-# add_path VARNAME value
+# add_path PATHVAR DIR
+#
+# Add DIR to PATHVAR but only if it's not already in the PATH, and only if DIR
+# actually exists.
+#
+# Examples:
 #
 #   add_path MAN /usr/local/man 
 #   add_path PATH /usr/local/bin
 
 add_path() {
   if [[ -d "$2" ]]; then
+    local val
     eval "val=\"\$$1\""
-    if ! { echo "$val" | egrep -q "^$2" ; } ; then
+    if ! { echo "$val" | egrep -q "(^|:)$2(:|\$)" ; } ; then
       eval "export $1=\"$val:$2\""
     fi
+  fi
+}
+
+# add_path_first PATHVAR DIR
+#
+# Put the DIR in the front of PATHVAR (but only if DIR actually exists)
+
+add_path_first() {
+  if [[ -d "$2" ]]; then
+    eval "export $1=\"${2}:\$$1\""
   fi
 }
 
@@ -111,6 +132,8 @@ add_path() {
 #
 # This uses a program at $SETPATH to efficiently build the PATH-like envar, or,
 # uses the "add_path" bash function above.
+#
+# PATHLIST is the name of an array containing a list of directories.
 
 add_paths() {
   eval "local list=(\"\${$3[@]}\")"

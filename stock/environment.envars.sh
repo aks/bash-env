@@ -73,7 +73,7 @@ fi
 
 # get plain hostname
 if [[ "$HOST" == *.* ]]; then
-  export HOST=`echo "$HOST" | sed -e 's/\..*//'`
+  export HOST=`echo "$HOST" | cut -d. -f1`
 fi
 
 if [[ -z "$HOSTALIASES" ]]; then
